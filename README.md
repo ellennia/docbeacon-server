@@ -1,5 +1,7 @@
 # DocBeacons
 
+## This is the DocBeacon server software, designed to dispense manuals.
+
 DocBeacons are intended to be Bluetooth Low-Energy (BLE) devices that broadcast the intended use and purpose behind objects and spaces. They are designed to be used with mobile apps that allow users to quickly see the locations and purposes of their physical environments.
 
 This quickly allows people to find out WHY things are arranged the way they are, as well as how to optimally use a device or environment. DocBeacons are designed to be a direct analogue to the traditional 'piece of paper' or manual, however, they are have more in common with the Unix manpage than the stack of papers.
@@ -16,8 +18,6 @@ DocBeacons should optimally be extremely cheap to mass produce.
 
 # The DocBeacon software.
 Being an effort meant to improve the world's understanding of their environments, Python was chosen in part because it is such a human readable language. One of the main goals of the project is to produce a codebase that is heavily documented and easily understandable, possible even to non-programmers.
-
-At the moment, it is written around the normal Bluetooth protocol, not Bluetooth Low-Energy, as specified above. The reason for this is that I do not have a perfect understanding of how exactly I would use BLE from Python, and I would rather create a prototype of the logic of the software before I mess around with the details of the hardware protocol.
 
 # The development
 DocBeacon is developed by Ellen Hebert. @homeslashellen ellenhebert@protonmail.com
