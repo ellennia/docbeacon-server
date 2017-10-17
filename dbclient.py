@@ -28,7 +28,7 @@ def do_search():
     '''
     if len(services) == 0:
         print('No DocBeacons found nearby. :(')
-        sys.exit(0)
+        return services
     else:
         return services
 
@@ -37,7 +37,7 @@ def do_search():
 
     Returns a connection.
 '''
-def connect(beacon):
+def connect_to(beacon):
     # Get information about the beacon we are connecting to.
     device_name = beacon["name"]
     connection_host = beacon["host"]
@@ -46,18 +46,51 @@ def connect(beacon):
     print("Connecting to device:{} on host:{}".format(device_name, connection_host))
     sock = BluetoothSocket(RFCOMM)
     connection = sock.connect((connection_host, connection_port))
+ 
+'''
+    Prints a command line selection menu
+'''
+def print_selector(selection_list):
+    choice = 1
 
-    print("Connection established to {}".format(host))
+    while True:
+        count = 1
+        list_length = len(selection_list)
+        # Print out detected DocBeacon list
+        for selection in selection_list:
+            print('{}: {}'.format(str(count), selection[1]))
+            count+=1
+        choice = int(raw_input('> '))
+
+        # Whoops! These aren't options...
+        if choice > list_length or choice < 1:
+            print('{} is not an option. Try again?'.format(choice))
+        else:
+            return choice
+ 
+''' Formats a manual for a user to read. '''
+def format_entry(entry):
+    print('====================================================')
+    print('== Page name: {}'.format(entry[0]))
+    print('----------------------------------------------------')
+    print(entry[1])
+    print('====================================================')
     return connection
 
 ''' Startup '''
-
 print('DocBeacon client application Pre-alpha')
+options = ["Scan for beacons", "Exit"]
+result = int(print_selector(options))
+if result == 1:
+    print('Scanning for nearby DocBeacons (this may take a while)... ')
+    clients = do_search()
+    print('Search complete. {} DocBeacons found'.format(len(clients)))
+    clients = ['Hihi', 'Cutey']
 
-print('Scanning for nearby DocBeacons (this may take a while)... ')
-clients = do_search()
-print('Search complete. {} DocBeacons found'.format(len(clients)))
-
-# Connect to the first beacon found.
-connection = connect(clients[0])
-
+    print('Choose beacon: ')
+    choice = print_selector(clients)
+    # DocBeacon list
+    print('You have chosen beacon {}.'.format(choice))
+    connect_to(clients[choice]) 
+elif result == 2:
+    sys.exit(0)
