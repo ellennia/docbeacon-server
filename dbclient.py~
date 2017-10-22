@@ -10,6 +10,14 @@ from bluetooth import *
 import sys
 # End imports
 
+class Beacon:
+
+    def __init__(self):
+        pass
+
+    def detect_service():
+        pass
+
 '''
     Scan the airwaves for nearby DocBeacons.
     Return a list of the DocBeacons found if
@@ -17,10 +25,11 @@ import sys
     the program if none are found.
 '''
 def do_search():
-    # Randomized UUID, same as the server.
-    uuid = 'a82d9aba-3cfb-4edd-9a81-b653a1e9b749'
+    # Randomized UUID, same as the server. UUID of the service that we are looking for.
+    # Otherwise this search would return a lot of unwanted BT devices.
+    service_uuid = 'a82d9aba-3cfb-4edd-9a81-b653a1e9b749'
     # Locates BT services using this UUID in range.
-    services = find_service(uuid = uuid, address = None)
+    services = find_service(uuid = service_uuid, address = None)
     '''
         If no services are found, print this to the user
         then exit. Otherwise, return the list of services

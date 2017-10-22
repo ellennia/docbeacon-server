@@ -7,18 +7,22 @@
 from bluetooth import *
 from pprint import *
 
-print 'Scanning for BT devices in range of this machine...'
+print 'Scanning for BT devices in range of this machine ({})...'.format()
 print '=======================================' 
 
 number = 0
 try:
-    for device in discover_devices(lookup_names = True):
-        print 'Device {}:'.format(str(number))
-        if device[1] == '':
-            device[1] = '{unnamed device}'
+    devices_found = discover_devices(duration = 15, lookup_names = True)
 
-        print '    Device name: {}'.format(device[1])
-        print '    MAC address: {}'.format(device[0])
+    for device in devices_found:
+        device_name = device[1]
+        mac_address = device[0]
+        print 'Device {}:'.format(str(number))
+
+        if device_name == '' or device_name == None:
+            device_name = 'unnamed device'
+        print '    Device name: {}'.format(device_name)
+        print '    MAC address: {}'.format(mac_address)
 
         print '    Device services:'
         services = find_service(device)

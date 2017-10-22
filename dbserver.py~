@@ -53,6 +53,7 @@
 
 ''' Imports '''
 import sqlite3
+from dbinterface import *
 from bluetooth import *
 from flask import *
 ''' End imports '''
@@ -65,6 +66,7 @@ application_uuid = 'a82d9aba-3cfb-4edd-9a81-b653a1e9b74'
     rfcomm
 '''
 def listen_for_connections(uuid):
+    uuid = '94f39d29-7d6d-437d-973b-fba39e49d4ee'
     server_socket = BluetoothSocket(RFCOMM)
     port = PORT_ANY
     server_socket.bind(("", port))
@@ -73,9 +75,29 @@ def listen_for_connections(uuid):
             service_classes = [uuid, SERIAL_PORT_CLASS],
             profiles = [ SERIAL_PORT_PROFILE ])
 
-    print('Advertising and waiting for connections at port {}'.format(port))
+    print('Advertising and waiting for connections at channel {}'.format(port))
     client_socket, client_info = server_socket.accept()
     print("Accepted connection from", client_info)
+
+    try:
+        while True:
+            data = client_socket.recv(1024)
+            if len(data) == 0: break
+            print("received [%s]" % data)
+    except IOError:
+        pass
+
+'''
+                            USER INTERFACE
+'''
+
+''' Formats a manual for a user to read. '''
+def format_entry(entry):
+    print('====================================================')
+    print('== Page name: {}'.format(entry[0]))
+    print('----------------------------------------------------')
+    print(entry[1])
+    print('====================================================')
 
 
 '''
@@ -101,5 +123,18 @@ def submit():
         pass
 
 print('DocBeacon Management Software, Alpha')
-print('Waiting for bluetooth connections...')
 listen_for_connections(application_uuid)
+print('Waiting for bluetooth connections...')
+
+#cr = make_db()
+
+#print("Made db")
+
+#make_entry(cr, "The Trannystar 1000", 
+#        "The Trannystar 1000 is a wonderful vehicle filled with\n"+
+#        "wonderful ammenities. It goes far beyond what one would\n"+
+#        "traditionally expect to be located inside of a car.\n\n\n"
+#        "Be amazed at the inverter. Enjoy the delicious soda.", 0, 0)
+
+#format_entry(retrieve_entry(cr, "The Trannystar 1000", 0))
+
